@@ -1,6 +1,5 @@
 const express = require('express')  // express 모듈을 가져옴.
 const app = express()  // express를 실행하여 app에 할당.
-const port = 3000  // 포트 번호를 3000으로 설정.
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const { User } = require("./models/User")
@@ -15,6 +14,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(cookieParser());
 
+// sql문 없이 사용할 수 있는 DB 
 const mongoose = require('mongoose')
 mongoose.connect(config.mongoURI, {
     // useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
@@ -22,6 +22,10 @@ mongoose.connect(config.mongoURI, {
   .catch(err => console.log(err))  // 연결이 안 되었을 때
 
 app.get('/', (req, res) => res.send('Hello World! 안뇽앙뇬'))
+
+app.get('/api/hello', (req, res) => {
+    res.send("안녕하세요 ~ ")
+})
 
 app.post('/api/users/register', async (req, res) => {
     // 회원 가입 할 때 필요한 정보들을 Client에서 가져오면
@@ -97,4 +101,7 @@ app.get('/api/users/logout', auth, (req, res) => {
     });
 })
 
+
+
+const port = 5000  // 포트 번호를 3000으로 설정.
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
